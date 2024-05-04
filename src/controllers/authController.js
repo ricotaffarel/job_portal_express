@@ -18,7 +18,7 @@ class AuthController {
 
         const checkPw = await unHashPassword(pw, user.password)
         console.log(checkPw)
-        if (checkPw == false) {
+        if (!checkPw) {
             return res.render('login', { error: 'Username and Password is correct' })
         }
 
