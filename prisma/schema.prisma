@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  username String
+  password String
+  token    String? 
+
+  @@map("users")
+}
+
+model JobCategories {
+  id         Int      @id @default(autoincrement())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  //relation
+  Jobs Job[]
+
+  @@map("job_categories")
+}
+
+model Job {
+  id              Int            @id @default(autoincrement())
+  jobName         String
+  description     String
+  image           String
+  expired         DateTime
+  created_at      DateTime       @default(now())
+  updated_at      DateTime       @default(now())
+  JobCategories   JobCategories? @relation(fields: [jobCategoriesId], references: [id])
+  jobCategoriesId Int?
+
+  //relation
+  ApplyJobs ApplyJob[]
+}
+
+model Applicant {
+  id            Int    @id @default(autoincrement())
+  name          String
+  email         String @unique
+  phoneNumber   String
+  address       String
+  lastEducation String // 1 = SMA/SMK/MA, 2 = S1, 3 = S2, 4 = S3
+  ipk           String
+
+  // experience
+  workExperience String
+  skill          String
+
+  // document
+  ktp               String
+  cv                String
+  applicationLetter String
+  image             String
+  otherDocument1    String
+  otherDocument2    String
+
+  //relation
+  ApplyJobs ApplyJob[]
+}
+
+model ApplyJob {
+  id Int @id @default(autoincrement())
+
+  Applicant   Applicant? @relation(fields: [applicantId], references: [id])
+  applicantId Int?
+  Job         Job?       @relation(fields: [jobId], references: [id])
+  jobId       Int?
+  status      String // 1-5
+}
