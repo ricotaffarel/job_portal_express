@@ -12,9 +12,12 @@ routeAuth.post('/', (req, res) => {
     authCOntroller.login(req, res)
 })
 
-routeAuth.get('/admin', (req, res) => {
-    const msg = req.session.message
-    res.render('admin/index', { message: msg })
-})
+// routeAuth.delete('/admin/test', (req, res) => {
+//     const msg = req.session.message
+//     const username = req.body.username
+//     const pw = req.body.password
+//     return res.json({ message: "okok", username: username, password: pw})
+//     // res.render('admin/index', { message: msg })
+// })
 
 module.exports = { routeAuth };

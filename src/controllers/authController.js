@@ -33,7 +33,6 @@ class AuthController {
 
         return res.redirect('/admin')
     }
-
 }
 
 module.exports = { AuthController };

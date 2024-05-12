@@ -3,12 +3,12 @@
 
 <head>
   <title>Login</title>
-  <%- include('../layouts/head.ejs') -%>
+  <%- include('../../layouts/head.ejs') -%>
 </head>
 
 <body>
-  <%- include('../layouts/header.ejs') -%>
-  <%- include('../layouts/sidebar.ejs') -%>
+  <%- include('../../layouts/header.ejs') -%>
+  <%- include('../../layouts/sidebar.ejs') -%>
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -22,10 +22,7 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-      <% if(message !== null && typeof message !== 'undefined') { %>
-      <h1><%- message -%></h1>
-      <%  } %>
-      ini dashboard
+      ini job category (CREATE)
     </section>
 
   </main><!-- End #main -->
@@ -46,7 +43,7 @@
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-  <%- include('../layouts/script.ejs') -%>
+  <%- include('../../layouts/script.ejs') -%>
 
 </body>
 
