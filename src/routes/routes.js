@@ -10,6 +10,7 @@ routes.use(routeJobCategories)
 
 routes.get('/admin', (req, res) => {
     const msg = req.session.message
+    req.session.message = null
     res.render('admin/index', { message: msg })
 })
 
