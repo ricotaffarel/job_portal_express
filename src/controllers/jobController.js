@@ -35,7 +35,7 @@ class JobController {
             })
 
             const imageFilePath = path.join(__dirname, '../../public/uploads/', data.image);
-           
+
             // Check if the file exists and delete it
             if (fs.existsSync(imageFilePath)) {
                 fs.unlinkSync(imageFilePath);
@@ -117,47 +117,105 @@ class JobController {
             if (error instanceof z.ZodError) {
                 return res.render('admin/job/create', {
                     category: data,
-                    error: error.errors.map(e => e.message).join(', ')
+                    error: error.errors.map(e => e.message).join(', '),
+                    formData: req.body
                 })
             } else {
                 return res.render('admin/job/create', {
                     category: data,
-                    error: error.message
+                    error: error.message,
+                    formData: req.body
                 })
             }
         }
     }
 
 
-    // async update(req, res) {
-    //     try {
-    //         const category_name = req.body.category_name
+    async update(req, res) {
+        try {
+            const {
+                job_name,
+                description,
+                expired,
+                job_category_id
+            } = req.body;
 
-    //         jobCategoryCreateValidation.parse({
-    //             category_name: category_name
-    //         })
+            // Perform validation using Zod
+            jobCreateValidation.parse({
+                job_name: job_name,
+                description: description,
+                expired: expired,
+                jobCategoriesId: job_category_id
+            });
 
-    //         await db.jobCategories.update({
-    //             where: {
-    //                 id: parseInt(req.params.id)
-    //             },
-    //             data: {
-    //                 name: category_name
-    //             }
-    //         })
+            // Convert expired date string to Date object
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            const [year, month, day] = expired.split('-').map(Number);
+            const dateExpired = new Date(year, month - 1, day + 1); // Month is zero-indexed in Date constructor
 
-    //         req.session.message = "Successfully updated"
-    //         return res.redirect('/admin/job-category')
-    //     } catch (error) {
-    //         if (error instanceof z.ZodError) {
-    //             req.session.error = error.errors.map(e => e.message).join(', ')
-    //             return res.redirect('/admin/job-category')
-    //         } else {
-    //             req.session.error = error.message
-    //             return res.redirect('/admin/job-category')
-    //         }
-    //     }
-    // }
+            // Check if image file exists
+            if (req.files) {
+                const imageFile = req.files.image;
+                if (!imageFile.mimetype.startsWith('image/')) {
+                    throw new Error('Uploaded file is not an image.');
+                }
+                const imageName = `${uniqueSuffix}+${imageFile.name}`
+                const imageFilePath = path.join(__dirname, '../../public/uploads/', imageName);
+                await imageFile.mv(imageFilePath);
+
+                const data = await db.job.findFirst({
+                    where: {
+                        id: parseInt(req.params.id)
+                    }
+                })
+
+                const lastImageFilePath = path.join(__dirname, '../../public/uploads/', data.image);
+
+                // Check if the file exists and delete it
+                if (fs.existsSync(lastImageFilePath)) {
+                    fs.unlinkSync(lastImageFilePath);
+                } else {
+                    throw new Error('Image file not found');
+                }
+
+                await db.job.update({
+                    where: {
+                        id: parseInt(req.params.id)
+                    },
+                    data: {
+                        jobName: job_name,
+                        description: description,
+                        image: imageName,
+                        expired: dateExpired,
+                        jobCategoriesId: parseInt(job_category_id)
+                    }
+                })
+            } else {
+                await db.job.update({
+                    where: {
+                        id: parseInt(req.params.id)
+                    },
+                    data: {
+                        jobName: job_name,
+                        description: description,
+                        expired: dateExpired,
+                        jobCategoriesId: parseInt(job_category_id)
+                    }
+                })
+            }
+
+            req.session.message = "Successfully updated"
+            return res.redirect('/admin/job')
+        } catch (error) {
+            if (error instanceof z.ZodError) {
+                req.session.error = error.errors.map(e => e.message).join(', ')
+                return res.redirect('/admin/job')
+            } else {
+                req.session.error = error.message
+                return res.redirect('/admin/job')
+            }
+        }
+    }
 }
 
 module.exports = { JobController };

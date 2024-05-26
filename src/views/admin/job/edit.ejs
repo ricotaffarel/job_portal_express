@@ -30,13 +30,13 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Form Job</h5>
+            <h5 class="card-title">Form Job </h5>
             <!-- General Form Elements -->
-            <form method="post" action="/admin/job/create" enctype="multipart/form-data">
+            <form method="post" action="/admin/job/update/<%= formData.id %>" enctype="multipart/form-data">
               <div class="row mb-3">
                 <label for="inputText" class="col-sm-2 col-form-label">Job Name</label>
                 <div class="col-sm-10">
-                  <input type="text" class="form-control" name="job_name" value="<%= typeof formData !== 'undefined' ? formData.job_name : '' %>">
+                  <input type="text" class="form-control" name="job_name" value="<%= typeof formData !== 'undefined' ? formData.jobName : '' %>">
                 </div>
               </div>
               <div class="row mb-3">
@@ -48,16 +48,17 @@
               <div class="row mb-3">
                 <label for="inputNumber" class="col-sm-2 col-form-label">Image</label>
                 <div class="col-sm-10">
-                  <input class="form-control" type="file" id="formFile" name="image">
+                  <input class="form-control mb-3" type="file" id="formFile" name="image">
+                  <img src="/uploads/<%= formData.image %>" style="width: 200px;" alt="">
                 </div>
               </div>
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-10">
                   <select class="form-select" aria-label="Default select example" name="job_category_id">
-                    <option selected value="">Open this select menu</option>
+                    <option value="">Open this select menu</option>
                     <% for(let i = 0; i < category.length; i++){ %>
-                    <option value="<%= category[i].id %>"><%= category[i].name %></option>
+                    <option value="<%= category[i].id %>" <%= formData.jobCategoriesId === category[i].id ? 'selected' : '' %>><%= category[i].name %></option>
                     <% } %>
                   </select>
                 </div>
@@ -68,7 +69,7 @@
                   <%= typeof formData !== 'undefined' ? formData.description : '' %>
                 </textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Create</button>
+              <button type="submit" class="btn btn-primary">Update</button>
             </form><!-- End General Form Elements -->
           </div>
         </div>

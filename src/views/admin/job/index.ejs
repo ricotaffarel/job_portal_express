@@ -63,30 +63,8 @@
                       <td><%= new Date(data[i].expired).toLocaleString('en-US', {timeZone: "Asia/Jakarta"}) %></td>
                       <td><%= new Date(data[i].updated_at).toLocaleString('en-US', {timeZone: "Asia/Jakarta"}) %></td>
                       <td>
-                        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#update<%= i %>">Edit</a>
+                        <a class="btn btn-primary" href="/admin/job/update/<%= data[i].id %>">Edit</a>
                         <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete<%= i %>">Delete</a>
-
-                        <!-- modal update -->
-                        <form action="/admin/job/update/<%= data[i].id %>" method="post">
-                          <div class="modal fade" id="update<%= i %>" tabindex="-1">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title">Form Update</h5>
-                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                  <label for="inputText" class="col-form-label">Category Name</label>
-                                  <input type="text" class="form-control" name="category_name" value="<%- data[i].name %>">
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                  <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </form>
                         <!-- modal delete -->
                         <form action="/admin/job/delete/<%= data[i].id %>" method="post">
                           <div class="modal fade" id="delete<%= i %>" tabindex="-1">
