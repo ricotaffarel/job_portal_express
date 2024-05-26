@@ -5,6 +5,8 @@ const routeAuth = express.Router()
 const authCOntroller = new AuthController
 
 routeAuth.get('/', (req, res) => {
+    req.session.message = null
+    req.session.error = null
     res.render('login',)
 })
 

@@ -6,6 +6,7 @@ const jobCategoryController = new JobCategoryController
 
 routeJobCategories.get('/admin/job-category', (req, res) => {
     jobCategoryController.get(req, res)
+    jobCategoryController.get(req, res)
 })
 
 routeJobCategories.get('/admin/job-category/create', (req, res) => {

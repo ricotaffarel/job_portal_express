@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Login</title>
+  <%- include('../../layouts/head.ejs') -%>
+</head>
+
+<body>
+  <%- include('../../layouts/header.ejs') -%>
+  <%- include('../../layouts/sidebar.ejs') -%>
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Job </h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/admin/job">Job</a></li>
+          <li class="breadcrumb-item active">Create</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+    <% if(typeof error !== 'undefined') { %>
+    <div class="alert alert-danger bg-danger text-light border-0 alert-dismissible fade show" role="alert">
+      <%- error %>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
+    <section class="section dashboard">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Form Job</h5>
+            <!-- General Form Elements -->
+            <form method="post" action="/admin/job/create" enctype="multipart/form-data">
+              <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Job Name</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" name="job_name">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputDate" class="col-sm-2 col-form-label">Expired Date</label>
+                <div class="col-sm-10">
+                  <input type="date" class="form-control" name="expired">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Image</label>
+                <div class="col-sm-10">
+                  <input class="form-control" type="file" id="formFile" name="image">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Category</label>
+                <div class="col-sm-10">
+                  <select class="form-select" aria-label="Default select example" name="job_category_id">
+                    <option selected value="">Open this select menu</option>
+                    <% for(let i = 0; i < category.length; i++){ %>
+                    <option value="<%= category[i].id %>"><%= category[i].name %></option>
+                    <% } %>
+                  </select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputNumber" class="col-sm-2 col-form-label">Description</label>
+                <textarea class="tinymce-editor" name="description">
+                </textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Create</button>
+            </form><!-- End General Form Elements -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <%- include('../../layouts/script.ejs') -%>
+
+</body>
+
+</html>

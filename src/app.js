@@ -3,6 +3,7 @@ const dotEnv = require('dotenv')
 const path = require('path')
 const { routes } = require('./routes/routes')
 const session = require('express-session')
+const fileUpload = require('express-fileupload');
 
 dotEnv.config()
 
@@ -15,12 +16,18 @@ app.use(express.static('public'))
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true, }))
 app.use(express.json())
+app.use(fileUpload());
 
 //session
 app.use(session({ secret: 'secret' }))
 
 app.use(routes)
+app.get('/file/:filename', (req, res) => {
+    const { filename } = req.params;
+    const imagePath = path.join(__dirname, '../public/uploads/', filename);
+    res.sendFile(imagePath);
+});
 
 app.listen(port, () => console.log(`Server running on port ${port}`))
