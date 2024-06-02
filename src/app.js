@@ -30,4 +30,13 @@ app.get('/file/:filename', (req, res) => {
     res.sendFile(imagePath);
 });
 
+app.get('/profile', (req, res) => {
+    res.statusCode = 200;
+    return res.json({
+        "nama": "rico",
+        "email": "rico@mail.com",
+        "alamat": "pamayahan"
+    })
+})
+
 app.listen(port, () => console.log(`Server running on port ${port}`))

@@ -1,10 +1,11 @@
 const express = require('express');
 const { AuthController } = require('../controllers/authController');
+const { checkLoginStatus } = require('../utils/password');
 
 const routeAuth = express.Router()
 const authCOntroller = new AuthController
 
-routeAuth.get('/', (req, res) => {
+routeAuth.get('/', checkLoginStatus, (req, res) => {
     req.session.message = null
     req.session.error = null
     res.render('login',)

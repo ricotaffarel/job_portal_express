@@ -30,6 +30,7 @@ class AuthController {
         })
 
         req.session.message = "Successfully logged in"
+        req.session.token = "thistoken"
 
         return res.redirect('/admin')
     }
